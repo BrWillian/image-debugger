@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
 }
 
 MainWindow::~MainWindow()
@@ -17,6 +18,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionCarregar_Imagens_triggered()
 {
     QString path = QFileDialog::getExistingDirectory(this, tr("Open Directory"), "", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+
+    file_utils::list_of_images.clear();
 
     if(!(path.toStdString() == ""))
     {
@@ -76,7 +79,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 QMessageBox::information(this, "Image Debugger", "You finished all images!");
             }
         }
-
+        if(event->key() == Qt::Key_E){
+            image_utils::result.insert(std::pair<std::string, bool>(file_utils::list_of_images.at(image_utils::npos).toStdString(), false));
+            //ui->label_3->setText(QString::number(image_utils::misses));
+        }
         if(event->key() == Qt::Key_Left)
         {
             if(image_utils::npos >= 0)
@@ -87,11 +93,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 image_utils::npos = 0;
             }
         }
-
-        if(event->key() == Qt::Key_E)
-        {
-            std::cout<<"apertou o e"<<std::endl;
-        }
+        image_utils::result.insert(std::pair<std::string, bool>(file_utils::list_of_images.at(image_utils::npos).toStdString(), true));
+        std::cout<<"teste"<<std::endl;
 
         QModelIndex ind = ui->listView->model()->index(image_utils::npos, 0);
         ui->listView->setCurrentIndex(ind);

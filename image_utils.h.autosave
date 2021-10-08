@@ -11,6 +11,7 @@ public:
     image_utils();
     inline static unsigned npos;
     inline static std::map<std::string, bool> result;
+    static std::string get_error();
 };
 
 #endif // IMAGE_UTILS_H

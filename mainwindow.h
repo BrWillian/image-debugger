@@ -8,6 +8,8 @@
 #include <thread>
 #include <QMessageBox>
 #include <iostream>
+#include <string>
+#include <map>
 #include <QStringListModel>
 #include "image_utils.h"
 
