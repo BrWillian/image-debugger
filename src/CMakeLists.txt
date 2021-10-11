@@ -19,8 +19,6 @@ add_executable(image_debug
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
-    file_utils.cpp
-    file_utils.h
     image_utils.h
     image_utils.cpp
 )

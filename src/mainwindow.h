@@ -1,7 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <file_utils.h>
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QtWidgets>
@@ -11,7 +10,8 @@
 #include <string>
 #include <map>
 #include <QStringListModel>
-#include "image_utils.h"
+#include <image_utils.h>
+#include <iomanip>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
