@@ -29,7 +29,6 @@ private slots:
     void on_actionCarregar_Imagens_triggered();
 
     void on_actionO_Frota_Sabe_triggered();
-
 private:
     Ui::MainWindow *ui;
     void show_image(QString location);

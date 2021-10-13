@@ -13,6 +13,10 @@ int image_utils::get_error()
     return count;
 }
 void image_utils::list_dir(QString Path){
+    image_utils::npos = 0;
+    image_utils::images.clear();
+    image_utils::entered.clear();
+
     QStringList nameFilter;
 
     nameFilter << "*.png" << "*.jpg" << "*.gif" << "*.jpeg";
@@ -25,6 +29,7 @@ void image_utils::list_dir(QString Path){
         QString strtmp = Path+QDir::separator()+file.fileName();
         image_utils::images.insert(std::pair<std::string, bool>(strtmp.toStdString(),true));
     }
+
 }
 std::map<std::string, bool>::iterator image_utils::get_map_from_index(int n)
 {
@@ -39,17 +44,38 @@ float image_utils::get_result()
 void image_utils::write_result()
 {
     std::ofstream buffer;
-    buffer.open("resultado.txt");
-    buffer << "-----------------------------------------------------------------------\n";
-    buffer << "Aproveitamento: ";
-    buffer << image_utils::get_result() << "%\n";
-    buffer << "-----------------------------------------------------------------------\n";
 
-    for ( auto &p : image_utils::images ){
-        if(p.second == false){
-            buffer << p.first << "\n";
+    if(!image_utils::fileExists("resultado.txt")){
+        buffer.open("resultado.txt", std::ofstream::out | std::ofstream::app);
+        buffer << "-----------------------------------------------------------------------\n";
+        buffer << "Aproveitamento: ";
+        buffer << image_utils::get_result() << "%\n";
+        buffer << "-----------------------------------------------------------------------\n";
+        buffer << "Imagens Incorretas\n";
+        buffer << "-----------------------------------------------------------------------\n";
+        buffer.close();
+    }else {
+        buffer.open("resultado.txt", std::ofstream::out | std::ofstream::app);
+        for ( auto &p : image_utils::images ){
+            if(p.second == false && !image_utils::already_entered(p.first)){
+                buffer << p.first << "\n";
+                image_utils::entered.push_back(p.first);
+            }
         }
+        buffer.close();
     }
-    buffer << "-----------------------------------------------------------------------\n";
-    buffer.close();
+}
+bool image_utils::fileExists(std::string file)
+{
+    std::ifstream infile(file);
+    return infile.good();
+}
+bool image_utils::already_entered(std::string str)
+{
+    auto it = std::find(image_utils::entered.begin(), image_utils::entered.end(), str);
+    if(it != image_utils::entered.end())
+    {
+        return true;
+    }
+    return false;
 }

@@ -1,6 +1,10 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+unsigned image_utils::npos = 0;
+std::map<std::string, bool> image_utils::images = std::map<std::string, bool>();
+std::vector<std::string> image_utils::entered = std::vector<std::string>();
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -18,8 +22,6 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionCarregar_Imagens_triggered()
 {
     QString path = QFileDialog::getExistingDirectory(this, tr("Open Directory"), "", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
-
-    image_utils::images.clear();
 
     if(!(path.toStdString() == ""))
     {
@@ -75,10 +77,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             {
                 image_utils::npos = image_utils::images.size()-1;
                 ui->label->setText(QString::number(image_utils::npos - image_utils::get_error()+1));
-
-                std::thread t2(&image_utils::write_result);
-                t2.join();
-
                 QMessageBox::information(this, "Image Debugger", "Imagens finalizadas!\nAproveitamento: "+QString::number(image_utils::get_result(), 'f', 2)+"%");
             }
             ui->label->setText(QString::number(image_utils::npos - image_utils::get_error()));
@@ -88,6 +86,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         }
         if(event->key() == Qt::Key_E){
             image_utils::get_map_from_index(image_utils::npos)->second = false;
+            std::thread t2(&image_utils::write_result);
+            t2.join();
         }
 
         if(event->key() == Qt::Key_Left)
