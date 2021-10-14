@@ -78,6 +78,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
                 image_utils::npos = image_utils::images.size()-1;
                 ui->label->setText(QString::number(image_utils::npos - image_utils::get_error()+1));
                 QMessageBox::information(this, "Image Debugger", "Imagens finalizadas!\nAproveitamento: "+QString::number(image_utils::get_result(), 'f', 2)+"%");
+                std::thread t2(&image_utils::write_accuracy);
+                t2.join();
             }
             ui->label->setText(QString::number(image_utils::npos - image_utils::get_error()));
             show_image(QString::fromStdString(image_utils::get_map_from_index(image_utils::npos)->first));

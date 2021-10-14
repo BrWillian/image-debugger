@@ -7,6 +7,7 @@
 #include <QDir>
 #include <QStringList>
 #include <fstream>
+#include <ctime>
 
 class image_utils
 {
@@ -22,6 +23,7 @@ public:
     static std::vector<std::string> entered;
     static bool fileExists(std::string file);
     static bool already_entered(std::string str);
+    static void write_accuracy();
 };
 
 #endif // IMAGE_UTILS_H

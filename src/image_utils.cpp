@@ -44,14 +44,14 @@ float image_utils::get_result()
 void image_utils::write_result()
 {
     std::ofstream buffer;
+    std::time_t date = std::time(nullptr);
 
     if(!image_utils::fileExists("resultado.txt")){
         buffer.open("resultado.txt", std::ofstream::out | std::ofstream::app);
         buffer << "-----------------------------------------------------------------------\n";
-        buffer << "Aproveitamento: ";
-        buffer << image_utils::get_result() << "%\n";
+        buffer << "Gerado as: " << std::ctime(&date);
         buffer << "-----------------------------------------------------------------------\n";
-        buffer << "Imagens Incorretas\n";
+        buffer << "Incorrect Images\n";
         buffer << "-----------------------------------------------------------------------\n";
         buffer.close();
     }else {
@@ -64,6 +64,15 @@ void image_utils::write_result()
         }
         buffer.close();
     }
+}
+void image_utils::write_accuracy()
+{
+    std::ofstream buffer;
+    buffer.open("resultado.txt", std::ofstream::out | std::ofstream::app);
+    buffer << "-----------------------------------------------------------------------\n";
+    buffer << "Accuracy: " << image_utils::get_result() << "%\n";
+    buffer << "-----------------------------------------------------------------------\n";
+    buffer.close();
 }
 bool image_utils::fileExists(std::string file)
 {
